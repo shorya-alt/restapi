@@ -7,7 +7,7 @@ from .serializers import BankSerializer
 import xlrd
 
 # Create your views here
-loc =("./bankuserdetails/userbankdetails/details.xlsx")
+loc =("./userbankdetails/details.xlsx")
 wb = xlrd.open_workbook(loc)
 sheet = wb.sheet_by_index(0)
 #for row 0 and column 0
@@ -23,7 +23,7 @@ def some_name(request):
         district = (sheet.cell_value(i, 5))
         state = (sheet.cell_value(i, 6))
         bank_name = (sheet.cell_value(i,7))
-        instance = Bank.objects.create(ifsc=ifsc,bank_id=bank_id,branch=branch,address=address,city=city,district=district,state=state
-                                      , bank_name=bank_name)
+        instance = Bank.objects.create(ifsc=ifsc,bank_id=bank_id,branch=branch,address=address,
+                                       city=city,district=district,state=state ,bank_name=bank_name)
         print('instance')
     return  "completed"
