@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render
+from django.http import HttpResponse
+from django.core.serializers import serialize
+from rest_framework.decorators import api_view
 from .models import Bank
 from .serializers import BankSerializer
 import xlrd
@@ -27,3 +30,26 @@ def some_name(request):
                                        city=city,district=district,state=state ,bank_name=bank_name)
         print('instance')
     return  "completed"
+@api_view(['GET'])
+def bank_details(request):
+    ifs = request.query_params['ifsc']
+    print(ifs)
+    Bank_details = Bank.objects.filter(ifsc=ifs)
+    application = serialize('json',Bank_details)
+    print(Bank_details)
+    print(application)
+    return HttpResponse(application)
+
+@api_view(['GET'])
+def bankname(request):
+ bname=request.query_params['bank_name']
+ bcity= request.query_params['city']
+ print(bcity)
+ print(bname)
+ user= Bank.objects.filter(bank_name=bname,city=bcity).only("branch")
+ application = BankSerializer(user,many=True)
+ print(user)
+ print(application)
+ return HttpResponse(application)
+
+
