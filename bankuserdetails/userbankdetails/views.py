@@ -7,15 +7,16 @@ from .serializers import BankSerializer
 import xlrd
 
 # Create your views here
-loc =("/home/hp/PycharmProject/corepython/banksdetails/bankuserdetails/details.xlsx")
+loc =("./bankuserdetails/userbankdetails/details.xlsx")
 wb = xlrd.open_workbook(loc)
 sheet = wb.sheet_by_index(0)
 #for row 0 and column 0
 # sheet.cell_value(0,0)
+# sheet.cell_value(0,0)
 def some_name(request):
     for i in range(sheet.nrows):
         ifsc = (sheet.cell_value(i,0))
-        bank_id = (sheet.cell_value(i,1))
+        bank_id = (sheet.cell_value(i, 1))
         branch = (sheet.cell_value(i, 2))
         address = (sheet.cell_value(i, 3))
         city = (sheet.cell_value(i, 4))

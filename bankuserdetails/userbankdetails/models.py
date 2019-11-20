@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Bank(models.Model):
-    ifsc = models.CharField(max_length=11,null=True)  
+    ifsc = models.CharField(max_length=11,null=True)
     bank_id = models.IntegerField(null=True)
     branch = models.CharField(max_length=80,null=True)
     address = models.CharField(max_length=200,null=True)
