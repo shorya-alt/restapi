@@ -34,7 +34,7 @@ def userdata_upload(request):
             district = column[5],
             state = column[6]
         )
-    context = {}
+        context = {}
     return render(request,template,context)
 
 
