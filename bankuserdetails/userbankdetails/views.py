@@ -1,41 +1,28 @@
-import csv
-import io
-
+from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render
-
 from .models import Bank
-
+from .serializers import BankSerializer
+import xlrd
 
 # Create your views here
-#this code belongs that super user add the file
-@permission_required('admin.can_add_log_entry')
-def userdata_upload(request):
-    template = "userdetails.html"
-    prompt = {
-        'order':'order of the csv should be ifsc, bank_id, branch , address,city,district,state'
-    }
-    if request.method == 'GET':
-        return render(request,template,prompt)
-    csv_file = request.FILES['file']
-    if not csv_file.name.endswith('.csv'):
-        messages.error(request,'This is not csv file')
-    data_set = csv_file.read().decode('UTF-8')
-    io_string = io.StringIO(data_set)
-    next(io_string)
-    for column in csv.reader(io_string,delimeter=',',quotechar="|"):
-        _, created = Bank.objects.update_or_create(
-            ifsc =column[0],
-            bank_id = column[1],
-            branch = column[2],
-            address = column[3],
-            city = column[4],
-            district = column[5],
-            state = column[6]
-        )
-        context = {}
-    return render(request,template,context)
-
-
-
+loc =("/home/hp/PycharmProject/corepython/banksdetails/bankuserdetails/details.xlsx")
+wb = xlrd.open_workbook(loc)
+sheet = wb.sheet_by_index(0)
+#for row 0 and column 0
+# sheet.cell_value(0,0)
+def some_name(request):
+    for i in range(sheet.nrows):
+        ifsc = (sheet.cell_value(i,1))
+        bank_id = (sheet.cell_value(i, 2))
+        branch = (sheet.cell_value(i, 3))
+        address = (sheet.cell_value(i, 4))
+        city = (sheet.cell_value(i, 5))
+        district = (sheet.cell_value(i, 6))
+        state = (sheet.cell_value(i, 7))
+        bank_name = (sheet.cell_value(i,8))
+        instance = Bank.objects.create(ifsc=ifsc,bank_id=bank_id,branch=branch,address=address,city=city,district=district,state=state
+                                      , bank_name=bank_name)
+        print('instance')
+    return  "completed"
