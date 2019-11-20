@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class Bank(models.Model):
     ifsc = models.CharField(max_length=11)  # branch
-    bank_id = models.BigIntegerField(max_length=50)
+    bank_id = models.IntegerField(max_length=50)
     branch = models.CharField(max_length=80)
     address = models.CharField(max_length=200)
     city = models.CharField(max_length=50)
