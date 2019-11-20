@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render
-from django.http import HttpResponse
+from rest_framework.response import   Response
 from django.core.serializers import serialize
 from rest_framework.decorators import api_view
 from .models import Bank
@@ -38,7 +38,7 @@ def bank_details(request):
     application = serialize('json',Bank_details)
     print(Bank_details)
     print(application)
-    return HttpResponse(application)
+    return Response(application)
 
 @api_view(['GET'])
 def bankname(request):
@@ -46,10 +46,11 @@ def bankname(request):
  bcity= request.query_params['city']
  print(bcity)
  print(bname)
- user= Bank.objects.filter(bank_name=bname,city=bcity).only("branch")
- application = BankSerializer(user,many=True)
+ user= Bank.objects.filter(bank_name=bname,city=bcity).values_list('branch')
+ # application = BankSerializer(user,many=True)
  print(user)
- print(application)
- return HttpResponse(application)
+ # print(application)
+  #HttpResponse(application.data)
+ return Response(user)
 
 
